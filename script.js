@@ -1,18 +1,8 @@
 const chessboard = document.getElementById("chessboard");
 
 //Uppercase = Black Pieces, Lowercase = White Pieces
-const initialBoard = [
-    ["r", "n", "b", "q", "k", "b", "n", "r"],
-    ["p", "p", "p", "p", "p", "p", "p", "p"],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["P", "P", "P", "P", "P", "P", "P", "P"],
-    ["R", "N", "B", "Q", "K", "B", "N", "R"]
-  ];
-  
-  const pieceImages = {
+
+const pieceImages = {
     "r": "sprites/black-rook.png",
     "n": "sprites/black-knight.png",
     "b": "sprites/black-bishop.png",
@@ -27,25 +17,71 @@ const initialBoard = [
     "P": "sprites/white-pawn.png"
 };
 
-for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
+const initialBoard = [
+    "r", "n", "b", "q", "k", "b", "n", "r",
+    "p", "p", "p", "p", "p", "p", "p", "p",
+    "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "",
+    "P", "P", "P", "P", "P", "P", "P", "P",
+    "R", "N", "B", "Q", "K", "B", "N", "R"
+];
+
+function createBoard() {
+    initialBoard.forEach((startPiece, i) => {
         const square = document.createElement("div");
         square.classList.add("square");
-
-        if ((row + col) % 2 == 0)
-            square.classList.add("white");
+        const row = Math.floor(((63 - i) / 8) + 1);
+        if ((row) % 2 === 0)
+            square.classList.add(i % 2 === 0 ? "white" : "black");
         else
-            square.classList.add("black");
-        
-        square.setAttribute('square-id', row*8+col);
-        const piece = initialBoard[row][col];
-        if (piece !== "") {
+            square.classList.add(i % 2 === 0 ? "black" : "white");
+
+        square.setAttribute('square-id', i);
+
+        if (startPiece !== "") {
             const pieceImg = document.createElement("img");
-            pieceImg.src = pieceImages[piece];
+            pieceImg.src = pieceImages[startPiece];
             square.appendChild(pieceImg);
         }
         square.firstChild?.setAttribute('draggable', true);
 
         chessboard.appendChild(square);
-    }
+    })
+}
+
+createBoard();
+
+const squares = document.querySelectorAll("#chessboard .square");
+
+squares.forEach(square => {
+    square.addEventListener('dragstart', dragStart);
+    square.addEventListener('dragover', dragOver);
+    square.addEventListener('drop', drop);
+})
+
+let startSquareId;
+let targetElement;
+
+function dragStart(e) {
+    startSquareId = e.target.parentNode.getAttribute('square-id')
+    targetElement = e.target
+}
+
+function dragOver(e) {
+    e.preventDefault();
+}
+
+function drop(e) {
+    e.stopPropagation()
+
+    if (e.target.getAttribute('square-id') !== null && !(e.target.classList.contains('piece')))
+        e.target.appendChild(targetElement)
+}
+
+playerTurn = "white";
+
+function changePlayer() {
+    (playerTurn === "white") ? playerTurn = "black" : playerTurn = "white";
 }
