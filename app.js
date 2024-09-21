@@ -54,6 +54,10 @@ function createBoard() {
             if (startPiece !== "") {
                 const pieceImg = document.createElement("img");
                 pieceImg.src = pieceImages[startPiece];
+                if (row <= 2)
+                    pieceImg.setAttribute('color', 'black')
+                else 
+                    pieceImg.setAttribute('color', 'white')
                 square.appendChild(pieceImg);
             }
             square.firstChild?.setAttribute('draggable', true);
