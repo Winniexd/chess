@@ -2,14 +2,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(hsl(0, 0%, 20%), hsl(0, 0%, 50%));
     height: 100vh;
     margin: 0;
 }
 
 #chessboard {
-    display: grid;
-    grid-template-columns: repeat(8, 100px);
-    grid-template-rows: repeat(8, 100px);
+    display: flex;
+    flex-wrap: wrap;
     width: 800px;
     height: 800px;
     border: 5px solid black;
