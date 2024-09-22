@@ -107,10 +107,13 @@ function dragOver(e) {
 }
 
 function drop(e) {
-    e.stopPropagation()
+    e.stopPropagation();
 
-    if (e.target.getAttribute('color') !== targetElement.getAttribute('color') && validMove(e.target, targetElement, startSquareId))
+    if (playerTurn === targetElement.getAttribute('color') && validMove(e.target, targetElement, startSquareId))
+    {
         e.target.appendChild(targetElement)
+        changePlayer();
+    }
 }
 
 playerTurn = "white";
