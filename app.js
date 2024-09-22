@@ -1,3 +1,4 @@
+
 const chessboard = document.getElementById("chessboard");
 
 //Uppercase = Black Pieces, Lowercase = White Pieces
@@ -16,6 +17,21 @@ const pieceImages = {
     "K": "sprites/white-king.png",
     "P": "sprites/white-pawn.png"
 };
+
+const pieceTypes = {
+    "p": "pawn",
+    "P": "pawn",
+    "r": "rook",
+    "R": "rook",
+    "n": "knight",
+    "N": "knight",
+    "b": "bishop",
+    "B": "bishop",
+    "q": "queen",
+    "Q": "queen",
+    "k": "king",
+    "K": "king",
+}
 
 const boardCoords = [
     ["a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"],
@@ -45,7 +61,7 @@ function createBoard() {
             const square = document.createElement("div");
             square.classList.add("square");
 
-            ((row+ col) % 2 === 0) ? square.classList.add("white") : square.classList.add("black");
+            ((row + col) % 2 === 0) ? square.classList.add("white") : square.classList.add("black");
 
             square.setAttribute('square-id', row*8+col);
             square.setAttribute('coord', boardCoords[row][col]);
@@ -54,7 +70,8 @@ function createBoard() {
             if (startPiece !== "") {
                 const pieceImg = document.createElement("img");
                 pieceImg.src = pieceImages[startPiece];
-                if (row <= 2)
+                pieceImg.setAttribute('type', pieceTypes[startPiece]);
+                if (row < 2)
                     pieceImg.setAttribute('color', 'black')
                 else 
                     pieceImg.setAttribute('color', 'white')
@@ -92,7 +109,7 @@ function dragOver(e) {
 function drop(e) {
     e.stopPropagation()
 
-    if (e.target.getAttribute('square-id') !== null && !(e.target.classList.contains('piece')))
+    if (e.target.getAttribute('color') !== targetElement.getAttribute('color') && validMove(e.target, targetElement, startSquareId))
         e.target.appendChild(targetElement)
 }
 
